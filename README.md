@@ -99,6 +99,13 @@ stack install
 を実行してください。
 
 ## ⚙️使い方
+static binary の作り方
+
+```
+$ stack install --flag makeMistakesToLearnHaskell:static
+```
+
+## 使い方
 
 1. 課題の一覧を表示する（特に引数を与えなければ一覧が表示されます）  
    ```
