@@ -20,6 +20,14 @@ data RunHaskellParameters = RunHaskellParameters
   , runHaskellParametersStdin :: !ByteString
   }
 
+data Env =
+  Env
+    { logDebug :: ByteString -> IO ()
+    , appHomePath :: FilePath
+    , runHaskell :: RunHaskellParameters -> IO (Either RunHaskellError (ByteString, ByteString))
+    , isDocker :: Bool
+    }
+
 defaultRunHaskellParameters :: RunHaskellParameters
 defaultRunHaskellParameters = RunHaskellParameters [] ""
 
