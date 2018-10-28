@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -Wno-unused-imports #-}
+{-# LANGUAGE LambdaCase #-}
 
 module Education.MakeMistakesToLearnHaskell.Exercise
   ( Exercise(verify)
@@ -68,7 +69,6 @@ loadDescription = loadWithExtension ".md"
 
 loadExampleSolution :: Exercise -> IO Text
 loadExampleSolution = loadWithExtension ".hs"
-
 
 loadWithExtension :: String -> Exercise -> IO Text
 loadWithExtension ext ex =
