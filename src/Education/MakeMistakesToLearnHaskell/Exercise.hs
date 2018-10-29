@@ -71,10 +71,12 @@ loadExampleSolution :: Exercise -> IO Text
 loadExampleSolution = loadWithExtension ".hs"
 
 loadWithExtension :: String -> Exercise -> IO Text
-loadWithExtension ext ex =
-  Paths.getDataFileName ("assets/" ++ exerciseName ex ++ ext)
-    >>= readUtf8File
+loadWithExtension ext ex = do
+  let path = "assets/" ++ exerciseName ex ++ ext
 
+  Dir.doesFileExist path >>= \case
+    True -> readUtf8File path
+    False -> Paths_makeMistakesToLearnHaskell.getDataFileName path >>= readUtf8File
 
 loadDescriptionByName :: Name -> IO (Maybe Text)
 loadDescriptionByName n = MaybeT.runMaybeT $ do
