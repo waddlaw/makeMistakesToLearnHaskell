@@ -99,6 +99,13 @@ stack install
 を実行してください。
 
 ## ⚙️使い方
+static binary の作り方
+
+```
+$ stack install --flag makeMistakesToLearnHaskell:static
+```
+
+## 使い方
 
 1. 課題の一覧を表示する（特に引数を与えなければ一覧が表示されます）  
    ```
@@ -175,3 +182,30 @@ stack install
 ## 依存ライブラリ
 
 - [main-tester](https://gitlab.com/igrep/main-tester)
+## Docker
+
+### ベースイメージの作成
+
+```shell
+shell> cd scripts/docker
+shell> docker build -t mmlh-run .
+```
+
+### Docker イメージの作成
+
+```shell
+shell> stack build --flag makeMistakesToLearnHaskell:static
+shell> stack image container --no-build
+```
+
+### 実行方法
+
+`$(pwd)/ans` に答えのファイルを保存する場合の例。
+
+```shell
+shell> docker run --rm -it -v $(pwd)/ans:/app/ans mmlh-entrypoint.sh bash
+
+# または
+shell> docker run --rm -it -v $(pwd)/ans:/app/ans mmlh-entrypoint.sh -- mmlh verify ans/A.hs
+```
+

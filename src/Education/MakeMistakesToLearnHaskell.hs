@@ -34,6 +34,7 @@ withMainEnv :: (Env -> IO r) -> IO r
 withMainEnv doAction = do
   d <- Env.getEnv homePathEnvVarName <|> Dir.getXdgDirectory Dir.XdgData appName
   Dir.createDirectoryIfMissing True d
+  isDocker' <- isJust <$> Env.lookupEnv "MMLH_DOCKER_MODE"
   IO.withFile (d </> "debug.log") IO.WriteMode $ \h -> do
     let e = defaultEnv
               { logDebug = ByteString.hPutStr h . (<> "\n")
@@ -61,6 +62,14 @@ cmdParser :: Opt.Parser Cmd
 cmdParser = Opt.hsubparser
   $  Opt.command "show" (Opt.info showCmdP (Opt.progDesc "Show Exercise"))
   <> Opt.command "verify" (Opt.info verifyCmdP (Opt.progDesc "Verify Exercise"))
+    let e =
+          Env
+            { logDebug    = ByteString.hPutStr h . (<> "\n")
+            , appHomePath = d
+            , runHaskell  = RunHaskell.runFile e
+            , isDocker    = isDocker'
+            }
+    action e
 
 
 printExerciseList :: IO ()
